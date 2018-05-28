@@ -45,6 +45,11 @@ var moves_counter = document.querySelector('.moves');
 var moves = 0;
 var stars = document.getElementsByClassName('fa-star');
 var restart = document.querySelector('.restart');
+var time = 0;
+function incrementTime(){time ++;};
+var timer = setInterval(incrementTime, 1000);
+var matched_cards = 0;
+var busy;
 document.addEventListener("DOMContentLoaded", function(event) {
     load();
     bindListeners();
@@ -70,6 +75,7 @@ function load(){
 function bindListeners(){
     for (let card of all_cards){
 	card.addEventListener('click', function(event){
+	    if(busy){return;}
 	    card.classList.toggle('open');
 	    card.classList.toggle('show');
 	    open_cards.push(card);
@@ -85,7 +91,16 @@ function bindListeners(){
 		    nomatch();
 		}else{
 		    match();
+		    matched_cards ++;
 		}
+	    }
+	    if (open_cards.length > 1){
+		timer;
+	    }
+	    if (matched_cards == 8){
+		console.log(time);
+		clearInterval(timer);
+		gameOver(time, stars.length);
 	    }
 	});
     }
@@ -105,6 +120,7 @@ function updateStarStatus(){
 
 //function to run if cards do not match
 function nomatch (){
+    busy = true;
     //animate them to show red, shake
     setTimeout(function(){
 	for(let opencard of open_cards){
@@ -118,15 +134,44 @@ function nomatch (){
 	    opencard.classList.toggle('open');
 	    opencard.classList.toggle('show');
 	    open_cards = [];
+	    busy = false;
 	}
     }, 1200);
 }
 //function to run if cards match
 function match(){
+    busy = true;
     for(let opencard of open_cards){
 	setTimeout(function(){
 	    opencard.classList.toggle('match');
 	    open_cards = [];
+	    busy = false;
 	},500);
     }
 }
+//function to run when user has matched all cards
+function gameOver(time, stars){
+    //function to convert player seconds into seconds, minutes, hours taken from https://stackoverflow.com/a/37096923
+    function secondsToTime(secs){
+	var hours = Math.floor(secs / (60 * 60));
+
+	var divisor_for_minutes = secs % (60 * 60);
+	var minutes = Math.floor(divisor_for_minutes / 60);
+
+	var divisor_for_seconds = divisor_for_minutes % 60;
+	var seconds = Math.ceil(divisor_for_seconds);
+
+	var obj = {
+	    "h": hours,
+	    "m": minutes,
+	    "s": seconds
+	};
+	return obj;
+    }
+    //alert that displays player status
+    setTimeout(function(){
+	var ut = secondsToTime(time);
+	alert(`your gamplay time was ${ut.h} hours ${ut.m} minutes and ${ut.s} seconds, and your star status was ${stars}!`);
+    }, 500);
+}
+    
