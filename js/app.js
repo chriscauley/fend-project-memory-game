@@ -41,6 +41,7 @@ var deck = document.querySelector('.deck');
 var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
 var all_cards = document.getElementsByClassName('card');
 var open_cards = [];
+var moves_counter = document.querySelector('.moves');
 var moves = 0;
 document.addEventListener("DOMContentLoaded", function(event) {
     reload();
@@ -48,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 //shuffles and reloads cards
 function reload(){
+    moves_counter.innerHTML = moves;
     var frag = document.createDocumentFragment();
     var card_list = '';
     var li = document.createElement('li');
@@ -69,7 +71,9 @@ function bindListeners(){
 	    card.classList.toggle('open');
 	    card.classList.toggle('show');
 	    open_cards.push(card);
+	    //up the moves counter with each click
 	    moves ++;
+	    moves_counter.innerHTML = moves;
 	    //if there are two open cards, check to see if they match
 	    if (open_cards.length == 2){
 		//if they don't match, flip the cards back over
