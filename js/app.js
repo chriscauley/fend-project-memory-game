@@ -36,7 +36,7 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-//shuffle cards and create playing board
+//Global variables and functions
 var deck = document.querySelector('.deck');
 var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
 var all_cards = document.getElementsByClassName('card');
@@ -45,9 +45,8 @@ var moves_counter = document.querySelector('.moves');
 var moves = 0;
 var stars = document.getElementsByClassName('fa-star');
 var restart = document.querySelector('.restart');
-var time = 0;
-function incrementTime(){time ++;};
-var timer = setInterval(incrementTime, 1000);
+var start_time;
+var end_time;
 var matched_cards = 0;
 var busy;
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -94,13 +93,12 @@ function bindListeners(){
 		    matched_cards ++;
 		}
 	    }
-	    if (open_cards.length > 1){
-		timer;
+	    if (moves == 1){
+		start_time = new Date().valueOf();
 	    }
 	    if (matched_cards == 8){
-		console.log(time);
-		clearInterval(timer);
-		gameOver(time, stars.length);
+		end_time = new Date().valueOf();
+		gameOver((end_time-start_time)/1000, stars.length);
 	    }
 	});
     }
@@ -172,6 +170,6 @@ function gameOver(time, stars){
     setTimeout(function(){
 	var ut = secondsToTime(time);
 	alert(`your gamplay time was ${ut.h} hours ${ut.m} minutes and ${ut.s} seconds, and your star status was ${stars}!`);
-    }, 500);
+    }, 700);
 }
     
