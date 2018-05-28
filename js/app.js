@@ -93,7 +93,7 @@ function bindListeners(){
 	location.reload();
     });
 }
-
+//function to update star status counter
 function updateStarStatus(){
     if(moves >=17 && stars.length === 3){
 	stars[2].classList.replace('fa-star', 'fa-star-o');
