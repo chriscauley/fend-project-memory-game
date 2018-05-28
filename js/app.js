@@ -1,9 +1,4 @@
 /*
- * Create a list that holds all of your cards
- */
-
-
-/*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
@@ -26,36 +21,41 @@ function shuffle(array) {
 }
 
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 //Global variables and functions
 var deck = document.querySelector('.deck');
+
+// Create a list that holds all of your cards
 var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
+
+//Other variables
 var all_cards = document.getElementsByClassName('card');
-var open_cards = [];
+var open_cards, start_time, end_time, busy, moves, matched_cards;
 var moves_counter = document.querySelector('.moves');
-var moves = 0;
 var stars = document.getElementsByClassName('fa-star');
 var restart = document.querySelector('.restart');
-var start_time;
-var end_time;
-var matched_cards = 0;
-var busy;
-document.addEventListener("DOMContentLoaded", function(event) {
-    load();
-    bindListeners();
-});
-//shuffles and intially loads cards
+
+//shuffles and loads cards
 function load(){
+
+    //reset initial values
+    matched_cards = moves = 0;
+    open_cards = [];
+    start_time = end_time = busy = undefined;
+
+    //remove cards
+    while(deck.hasChildNodes()){
+	deck.removeChild(deck.lastChild);
+    }
+    //reset moves counter
     moves_counter.innerHTML = moves;
+
+    //reset stars
+    var empty_stars = document.querySelectorAll('.fa-star-o');
+    for(let star of empty_stars){
+	star.classList.replace('fa-star-o', 'fa-star');
+    }
+    
+    //append and create cards
     var frag = document.createDocumentFragment();
     var card_list = '';
     var li = document.createElement('li');
@@ -68,7 +68,22 @@ function load(){
 	frag.appendChild(li.cloneNode(true));
     }
     deck.appendChild(frag);
+    bindListeners();
 }
+
+//initial page load
+document.addEventListener("DOMContentLoaded", load);
+
+/*
+ * set up the event listener for a card. If a card is clicked:
+ *  - display the card's symbol (put this functionality in another function that you call from this one)
+ *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ *  - if the list already has another card, check to see if the two cards match
+ *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
+ *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ */
 
 //add event listeners for showing cards
 function bindListeners(){
@@ -77,6 +92,11 @@ function bindListeners(){
 	    if(busy){return;}
 	    card.classList.toggle('open');
 	    card.classList.toggle('show');
+	    //if you click on the same card, it won't get added to the open cards list
+	    if(open_cards[0] == card){
+		open_cards = [];
+		return;
+	    }
 	    open_cards.push(card);
 	    //up the moves counter with each click
 	    moves ++;
@@ -103,7 +123,7 @@ function bindListeners(){
 	});
     }
     restart.addEventListener('click', function(){
-	location.reload();
+	load();
     });
 }
 //function to update star status counter
@@ -169,7 +189,8 @@ function gameOver(time, stars){
     //alert that displays player status
     setTimeout(function(){
 	var ut = secondsToTime(time);
-	alert(`your gamplay time was ${ut.h} hours ${ut.m} minutes and ${ut.s} seconds, and your star status was ${stars}!`);
+	alert(`Your game play time was ${ut.h} hours ${ut.m} minutes and ${ut.s} seconds, and your star status was ${stars}! Press OK to play again!`);
+	load();
     }, 700);
 }
     
