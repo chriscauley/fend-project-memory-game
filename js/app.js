@@ -49,11 +49,13 @@ for (let card of allCards){
 	if (openCards.length == 2){
 	    //if they don't match, flip the cards back over
 	    if(openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className){
+		//animate them to show red, shake
 		setTimeout(function(){
 		    for(let opencard of openCards){
 			opencard.classList.add('nomatch');
 		    }
 		}, 400);
+		//flip cards over
 		setTimeout(function(){
 		    for(let opencard of openCards){
 			opencard.classList.remove('nomatch');
