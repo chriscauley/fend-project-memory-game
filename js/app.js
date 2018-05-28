@@ -89,39 +89,55 @@ document.addEventListener("DOMContentLoaded", load);
 function bindListeners(){
     for (let card of all_cards){
 	card.addEventListener('click', function(event){
+
+	    //if the card is being matched, or not matched, the user won't be able to click on anything/click event will be stopped
 	    if(busy){return;}
+
+	    //toggle card classes so the card shows
 	    card.classList.toggle('open');
 	    card.classList.toggle('show');
-	    //if you click on the same card, it won't get added to the open cards list
-	    if(open_cards[0] == card){
+
+	    //add clicked card to open cards list
+	    open_cards.push(card);
+
+	    //If you click the same card then it won't increment the open cards list, and card list gets reset
+	      if(open_cards[0] == card){
 		open_cards = [];
 		return;
 	    }
-	    open_cards.push(card);
+
 	    //up the moves counter with each click
 	    moves ++;
 	    moves_counter.innerHTML = moves;
+
+	    //updates the star status
 	    updateStarStatus();
+
 	    //if there are two open cards, check to see if they match
 	    if (open_cards.length == 2){
-		//if they don't match, flip the cards back over
 		if(open_cards[0].childNodes[0].className !== open_cards[1].childNodes[0].className){
-		    //if they do match, turn them green, set match class
+		    //if they don't match, flip the cards back over
 		    nomatch();
 		}else{
+		    //if they do match, turn them green, set match class
 		    match();
 		    matched_cards ++;
 		}
 	    }
+
+	    //start timer when the person clicks the first card
 	    if (moves == 1){
 		start_time = new Date().valueOf();
 	    }
+
+	    //if the matched card count equals 8 (which is 16/2 cards) then set the end time and run the game over function
 	    if (matched_cards == 8){
 		end_time = new Date().valueOf();
 		gameOver((end_time-start_time)/1000, stars.length);
 	    }
 	});
     }
+    //handler if someone wants to click the restart button at the top of the game
     restart.addEventListener('click', function(){
 	load();
     });
@@ -138,7 +154,9 @@ function updateStarStatus(){
 
 //function to run if cards do not match
 function nomatch (){
+    //set the status to busy so users can't click on other cards
     busy = true;
+
     //animate them to show red, shake
     setTimeout(function(){
 	for(let opencard of open_cards){
@@ -152,6 +170,7 @@ function nomatch (){
 	    opencard.classList.toggle('open');
 	    opencard.classList.toggle('show');
 	    open_cards = [];
+	    //set status to not busy to allow clicking
 	    busy = false;
 	}
     }, 1200);
