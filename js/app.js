@@ -36,44 +36,67 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-var allCards = document.getElementsByClassName('card');
+//shuffle cards and create playing board
 var deck = document.querySelector('.deck');
-var openCards = [];
+var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
+document.addEventListener("DOMContentLoaded", function(event) {
+    reload();
+    bindListeners();
+});
+//shuffles and reloads cards
+function reload(){
+    var frag = document.createDocumentFragment();
+    var card_list = '';
+    var li = document.createElement('li');
+    var i = document.createElement('i');
+    shuffle(card_icons);
+    for(let icon of card_icons){
+	li.className = 'card';
+	li.appendChild(i);
+	i.className = icon;
+	frag.appendChild(li.cloneNode(true));
+    }
+    deck.appendChild(frag);
+}
 //add event listeners for showing cards
-for (let card of allCards){
-    card.addEventListener('click', function(event){
-	card.classList.toggle('open');
-	card.classList.toggle('show');
-	openCards.push(card);
-	//if there are two open cards, check to see if they match
-	if (openCards.length == 2){
-	    //if they don't match, flip the cards back over
-	    if(openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className){
-		//animate them to show red, shake
-		setTimeout(function(){
-		    for(let opencard of openCards){
-			opencard.classList.add('nomatch');
-		    }
-		}, 400);
-		//flip cards over
-		setTimeout(function(){
-		    for(let opencard of openCards){
-			opencard.classList.remove('nomatch');
-			opencard.classList.toggle('open');
-			opencard.classList.toggle('show');
-			openCards = [];
-		    }
-		}, 1200);
-		//if they do match, turn them green, set match class
-	    }else{
-		for(let opencard of openCards){
+function bindListeners(){
+    var all_cards = document.getElementsByClassName('card');
+    var open_cards = [];
+    for (let card of all_cards){
+	card.addEventListener('click', function(event){
+	    card.classList.toggle('open');
+	    card.classList.toggle('show');
+	    open_cards.push(card);
+	    //if there are two open cards, check to see if they match
+	    if (open_cards.length == 2){
+		//if they don't match, flip the cards back over
+		if(open_cards[0].childNodes[0].className !== open_cards[1].childNodes[0].className){
+		    //animate them to show red, shake
 		    setTimeout(function(){
-			opencard.classList.toggle('match');
-			openCards = [];
-		    },500);
+			for(let opencard of open_cards){
+			    opencard.classList.add('nomatch');
+			}
+		    }, 400);
+		    //flip cards over
+		    setTimeout(function(){
+			for(let opencard of open_cards){
+			    opencard.classList.remove('nomatch');
+			    opencard.classList.toggle('open');
+			    opencard.classList.toggle('show');
+			    open_cards = [];
+			}
+		    }, 1200);
+		    //if they do match, turn them green, set match class
+		}else{
+		    for(let opencard of open_cards){
+			setTimeout(function(){
+			    opencard.classList.toggle('match');
+			    open_cards = [];
+			},500);
+		    }
 		}
 	    }
-	}
-    });
+	});
+    }
 }
 
