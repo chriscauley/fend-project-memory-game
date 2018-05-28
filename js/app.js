@@ -43,12 +43,14 @@ var all_cards = document.getElementsByClassName('card');
 var open_cards = [];
 var moves_counter = document.querySelector('.moves');
 var moves = 0;
+var stars = document.getElementsByClassName('fa-star');
+var restart = document.querySelector('.restart');
 document.addEventListener("DOMContentLoaded", function(event) {
-    reload();
+    load();
     bindListeners();
 });
-//shuffles and reloads cards
-function reload(){
+//shuffles and intially loads cards
+function load(){
     moves_counter.innerHTML = moves;
     var frag = document.createDocumentFragment();
     var card_list = '';
@@ -74,6 +76,7 @@ function bindListeners(){
 	    //up the moves counter with each click
 	    moves ++;
 	    moves_counter.innerHTML = moves;
+	    updateStarStatus();
 	    //if there are two open cards, check to see if they match
 	    if (open_cards.length == 2){
 		//if they don't match, flip the cards back over
@@ -85,6 +88,18 @@ function bindListeners(){
 		}
 	    }
 	});
+    }
+    restart.addEventListener('click', function(){
+	location.reload();
+    });
+}
+
+function updateStarStatus(){
+    if(moves >=17 && stars.length === 3){
+	stars[2].classList.replace('fa-star', 'fa-star-o');
+    }
+    if(moves >=26 && stars.length == 2){
+	stars[1].classList.replace('fa-star', 'fa-star-o');
     }
 }
 
@@ -115,4 +130,3 @@ function match(){
 	},500);
     }
 }
-
