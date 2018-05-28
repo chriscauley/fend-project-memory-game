@@ -51,11 +51,17 @@ for (let card of allCards){
 	    if(openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className){
 		setTimeout(function(){
 		    for(let opencard of openCards){
+			opencard.classList.add('nomatch');
+		    }
+		}, 400);
+		setTimeout(function(){
+		    for(let opencard of openCards){
+			opencard.classList.remove('nomatch');
 			opencard.classList.toggle('open');
 			opencard.classList.toggle('show');
 			openCards = [];
 		    }
-		}, 1000);
+		}, 1200);
 		//if they do match, turn them green, set match class
 	    }else{
 		for(let opencard of openCards){
