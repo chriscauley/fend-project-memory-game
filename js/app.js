@@ -39,6 +39,8 @@ function shuffle(array) {
 //shuffle cards and create playing board
 var deck = document.querySelector('.deck');
 var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
+var all_cards = document.getElementsByClassName('card');
+var open_cards = [];
 document.addEventListener("DOMContentLoaded", function(event) {
     reload();
     bindListeners();
@@ -58,10 +60,9 @@ function reload(){
     }
     deck.appendChild(frag);
 }
+
 //add event listeners for showing cards
 function bindListeners(){
-    var all_cards = document.getElementsByClassName('card');
-    var open_cards = [];
     for (let card of all_cards){
 	card.addEventListener('click', function(event){
 	    card.classList.toggle('open');
@@ -71,32 +72,41 @@ function bindListeners(){
 	    if (open_cards.length == 2){
 		//if they don't match, flip the cards back over
 		if(open_cards[0].childNodes[0].className !== open_cards[1].childNodes[0].className){
-		    //animate them to show red, shake
-		    setTimeout(function(){
-			for(let opencard of open_cards){
-			    opencard.classList.add('nomatch');
-			}
-		    }, 400);
-		    //flip cards over
-		    setTimeout(function(){
-			for(let opencard of open_cards){
-			    opencard.classList.remove('nomatch');
-			    opencard.classList.toggle('open');
-			    opencard.classList.toggle('show');
-			    open_cards = [];
-			}
-		    }, 1200);
 		    //if they do match, turn them green, set match class
+		    nomatch();
 		}else{
-		    for(let opencard of open_cards){
-			setTimeout(function(){
-			    opencard.classList.toggle('match');
-			    open_cards = [];
-			},500);
-		    }
+		    match();
 		}
 	    }
 	});
+    }
+}
+
+//function to run if cards do not match
+function nomatch (){
+    //animate them to show red, shake
+    setTimeout(function(){
+	for(let opencard of open_cards){
+	    opencard.classList.add('nomatch');
+	}
+    }, 400);
+    //flip cards over
+    setTimeout(function(){
+	for(let opencard of open_cards){
+	    opencard.classList.remove('nomatch');
+	    opencard.classList.toggle('open');
+	    opencard.classList.toggle('show');
+	    open_cards = [];
+	}
+    }, 1200);
+}
+//function to run if cards match
+function match(){
+    for(let opencard of open_cards){
+	setTimeout(function(){
+	    opencard.classList.toggle('match');
+	    open_cards = [];
+	},500);
     }
 }
 
