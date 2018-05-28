@@ -38,10 +38,23 @@ function shuffle(array) {
  */
 var allCards = document.getElementsByClassName('card');
 var deck = document.querySelector('.deck');
+var openCards = [];
 //add event listeners for showing cards
 for (let card of allCards){
     card.addEventListener('click', function(event){
 	card.classList.toggle('open');
 	card.classList.toggle('show');
+	openCards.push(card);
+	//if there are two open cards and they do not match, turn them back over and reset the openCards list
+	if ((openCards.length == 2) && (openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className)){
+	    setTimeout(function(){
+		for(let opencard of openCards){
+		    opencard.classList.toggle('open');
+		    opencard.classList.toggle('show');
+		    openCards = [];
+		}
+	    }, 1000);
+	}
     });
 }
+
