@@ -45,15 +45,26 @@ for (let card of allCards){
 	card.classList.toggle('open');
 	card.classList.toggle('show');
 	openCards.push(card);
-	//if there are two open cards and they do not match, turn them back over and reset the openCards list
-	if ((openCards.length == 2) && (openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className)){
-	    setTimeout(function(){
+	//if there are two open cards, check to see if they match
+	if (openCards.length == 2){
+	    //if they don't match, flip the cards back over
+	    if(openCards[0].childNodes[1].className !== openCards[1].childNodes[1].className){
+		setTimeout(function(){
+		    for(let opencard of openCards){
+			opencard.classList.toggle('open');
+			opencard.classList.toggle('show');
+			openCards = [];
+		    }
+		}, 1000);
+		//if they do match, turn them green, set match class
+	    }else{
 		for(let opencard of openCards){
-		    opencard.classList.toggle('open');
-		    opencard.classList.toggle('show');
-		    openCards = [];
+		    setTimeout(function(){
+			opencard.classList.toggle('match');
+			openCards = [];
+		    },500);
 		}
-	    }, 1000);
+	    }
 	}
     });
 }
