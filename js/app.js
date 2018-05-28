@@ -97,14 +97,14 @@ function bindListeners(){
 	    card.classList.toggle('open');
 	    card.classList.toggle('show');
 
-	    //add clicked card to open cards list
-	    open_cards.push(card);
-
 	    //If you click the same card then it won't increment the open cards list, and card list gets reset
-	      if(open_cards[0] == card){
+	    if(open_cards[0] == card){
 		open_cards = [];
 		return;
 	    }
+
+	    //add clicked card to open cards list
+	    open_cards.push(card);
 
 	    //up the moves counter with each click
 	    moves ++;
