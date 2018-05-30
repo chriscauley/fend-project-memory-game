@@ -1,20 +1,15 @@
 # Memory Game Project
 
-## Table of Contents
+## About
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+A memory game where you flip two cards at a time and try to match all cards on the board. Cards are randomly shuffled at the beginning of the game and created in the HTML. Project is in pure JS since I wanted to avoid using jQuery, and utilizes CSS3 animations when cards do not match. Starter code included HTML, CSS (minus animations), but all JS, except where attributed, was written for the project.
 
-## Instructions
+## Dependencies
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
-
-To get started, open `js/app.js` and start building out the app's functionality
-
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+*Font awesome
+*Google fonts
+Both are linked CDNs, and don't require any additional downloads.
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+The starter code was forked from Udacity [here](https://github.com/udacity/fend-project-memory-game).
