@@ -29,11 +29,11 @@ var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa
 
 //Other variables
 var all_cards = document.getElementsByClassName('card');
-var open_cards, start_time, end_time, busy, moves, matched_cards;
+var open_cards, start_time, end_time, timer_interval, busy, moves, matched_cards;
 var moves_counter = document.querySelector('.moves');
 var stars = document.getElementsByClassName('fa-star');
 var restart = document.querySelector('.restart');
-
+var timer = document.querySelector('.timer');
 //shuffles and loads cards
 function load(){
 
@@ -41,6 +41,7 @@ function load(){
     matched_cards = moves = 0;
     open_cards = [];
     start_time = end_time = busy = undefined;
+    timer.innerHTML = '0 seconds';
 
     //remove cards
     while(deck.hasChildNodes()){
@@ -128,12 +129,14 @@ function bindListeners(){
 	    //start timer when the person clicks the first card
 	    if (moves == 1){
 		start_time = new Date().valueOf();
+		timer_interval = setInterval(updateTime, 1000);
 	    }
 
 	    //if the matched card count equals 8 (which is 16/2 cards) then set the end time and run the game over function
 	    if (matched_cards == 8){
-		end_time = new Date().valueOf();
-		gameOver((end_time-start_time)/1000, stars.length);
+		clearInterval(timer_interval);
+		updateTime();
+		gameOver((current_time-start_time)/1000, stars.length);
 	    }
 	});
     }
@@ -196,7 +199,7 @@ function gameOver(time, stars){
 	var minutes = Math.floor(divisor_for_minutes / 60);
 
 	var divisor_for_seconds = divisor_for_minutes % 60;
-	var seconds = Math.ceil(divisor_for_seconds);
+	var seconds = Math.floor(divisor_for_seconds);
 
 	var obj = {
 	    "h": hours,
@@ -213,3 +216,11 @@ function gameOver(time, stars){
     }, 700);
 }
     
+//function to update time
+function updateTime(){
+    if(!start_time){return};
+    current_time = new Date().valueOf();
+    current_seconds = (current_time-start_time)/1000;
+    timer.innerHTML = Math.floor(current_seconds) + " seconds";
+}
+

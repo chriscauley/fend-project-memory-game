@@ -93,7 +93,9 @@ h1 {
  */
 
 .score-panel {
-    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 345px;
     margin-bottom: 10px;
 }
@@ -113,6 +115,20 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.score-panel .timer {
+    font-size: 20px;
+}
+
+.score-panel .timer-box {
+    padding: 5px;
+    border: solid 1px lightblue;
+}
+
+.score-panel .moves {
+    font-weight: bold;
+    font-size: 20px;
 }
 
 /* 
