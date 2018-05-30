@@ -17,6 +17,7 @@ A memory game where you flip two cards at a time and try to match all cards on t
 
 * Font awesome
 * Google fonts
+
 Both are linked CDNs, and don't require any additional downloads.
 
 ## Contributing
