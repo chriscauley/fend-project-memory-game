@@ -115,7 +115,7 @@ function bindListeners(){
 	    updateStarStatus();
 
 	    //if there are two open cards, check to see if they match
-	    if (open_cards.length == 2){
+	    if (open_cards.length === 2){
 		if(open_cards[0].childNodes[0].className !== open_cards[1].childNodes[0].className){
 		    //if they don't match, flip the cards back over
 		    nomatch();
