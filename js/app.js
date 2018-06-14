@@ -28,12 +28,13 @@ var deck = document.querySelector('.deck');
 var card_icons = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-anchor", "fa fa-leaf", "fa fa-bicycle", "fa fa-diamond", "fa fa-bomb", "fa fa-leaf", "fa fa-bomb", "fa fa-bolt", "fa fa-bicycle", "fa fa-paper-plane-o", "fa fa-cube"]
 
 //Other variables
-var all_cards = document.getElementsByClassName('card');
+var all_cards = deck.getElementsByClassName('card');
 var open_cards, start_time, end_time, timer_interval, busy, moves, matched_cards;
 var moves_counter = document.querySelector('.moves');
 var stars = document.getElementsByClassName('fa-star');
 var restart = document.querySelector('.restart');
 var timer = document.querySelector('.timer');
+window.CHEAT = window.location.search.indexOf("cheat") != -1;
 //shuffles and loads cards
 function load(){
 
@@ -62,6 +63,7 @@ function load(){
     var li = document.createElement('li');
     var i = document.createElement('i');
     shuffle(card_icons);
+    if (window.CHEAT) { card_icons.sort(); }
     for(let icon of card_icons){
 	li.className = 'card';
 	li.appendChild(i);
